@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# Run the PostgreSQL commit checks (see pg-hook-lib.sh) on the staged
+# changes.  pre-applypatch delegates here so git am is covered too.
+
+set -u
+
+mode=staged
+. "$(dirname "$0")/pg-hook-lib.sh"
+
+pg_run_checks

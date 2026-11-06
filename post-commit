@@ -1,0 +1,15 @@
+#!/bin/sh
+#
+# cherry-pick (and rebase) commit without running pre-commit, so run the
+# PostgreSQL commit checks (see pg-hook-lib.sh) on the new commit instead.
+# The commit can no longer be refused, but the warning means it can be
+# amended.  CHERRY_PICK_HEAD only exists while such a pick is in progress.
+
+set -u
+
+git rev-parse -q --verify CHERRY_PICK_HEAD >/dev/null || exit 0
+
+mode=head
+. "$(dirname "$0")/pg-hook-lib.sh"
+
+pg_run_checks
